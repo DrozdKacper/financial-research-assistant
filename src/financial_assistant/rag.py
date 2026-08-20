@@ -1,4 +1,3 @@
-import os
 
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
@@ -28,3 +27,11 @@ def create_retriever(vector_store: PineconeVectorStore, config: dict) -> VectorS
     )
 
     return retriever
+
+def load_vector_store(embeddings: OpenAIEmbeddings, config: dict) -> PineconeVectorStore:
+
+    return PineconeVectorStore(
+        index_name=config["pinecone"]["index_name"],
+        embedding=embeddings,
+        namespace=config["pinecone"]["namespace"],
+    )
