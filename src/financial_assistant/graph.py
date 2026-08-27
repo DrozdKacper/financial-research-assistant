@@ -1,24 +1,21 @@
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.tools import tool
-from langchain_core.vectorstores import VectorStoreRetriever
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from dataclasses import dataclass
 from typing import Annotated
 
-from langgraph.prebuilt import ToolNode
-from typing_extensions import TypedDict
+from langchain_core.documents import Document
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.vectorstores import VectorStoreRetriever
+from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
-from langchain_core.documents import Document
-from dataclasses import dataclass
+from langgraph.prebuilt import ToolNode
 from langgraph.runtime import Runtime
-
-from financial_assistant.tools import get_current_stock_price
+from typing_extensions import TypedDict
 
 
 class State(TypedDict):
-
     messages: Annotated[list, add_messages]
     documents: list[Document]
+
 
 @dataclass
 class Context:
@@ -45,6 +42,7 @@ def route_tools(state: State):
 
     return END
 
+
 def create_graph(tools):
 
     graph_builder = StateGraph(State)
@@ -67,11 +65,4 @@ def create_graph(tools):
 
     graph_builder.add_edge("tools", "chatbot")
 
-
-
     return graph_builder.compile()
-
-
-
-
-

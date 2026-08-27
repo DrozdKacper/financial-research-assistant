@@ -7,24 +7,6 @@ from langchain_openai import ChatOpenAI
 
 load_dotenv()
 
-@tool
-def get_current_stock_price(ticker: str) -> str:
-
-    """Get the current market price of a stock for a given ticker symbol."""
-
-    url = "https://api.twelvedata.com/price"
-
-    params = {
-        "symbol": ticker,
-        "apikey": os.getenv("TWELVE_DATA_API_KEY")
-    }
-
-    response = requests.get(url, params=params)
-
-    data = response.json()
-
-
-    return data["price"]
 
 
 def create_search_financial_documents_tool(
